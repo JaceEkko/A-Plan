@@ -1,16 +1,35 @@
-A = [0,0,1,0] #B = [0,1,1,0]
-B = [0,1,1,0]
-C = [1,0,1,0] #D = [0,0,0,0]
-D = [0,0,0,0]
-E = [0,1,0,0] #D = [0,1,0,0]
-F = [0,1,0,0]
+from enum import Enum
+import numpy as np
 
-Times = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+Days = Enum('Days', 'M T W Th F')
+    
+class Schedule:
+    def __init__(self):
+        self.courseSch = np.full((5,12),0)
 
-C1 = [A,B]
-C2 = [C,D]
-C3 = [E,F]
-CSch = [[0,0,0,0], [0,0,0,0]]
+    def addCourse(self, course):  #WRITE CODE
+        print("adding course")
+
+    def checkTimeConflict(self, ts_cour): # variable is arrays for a specific day
+        print("checks if acourse can fit into the schedule")
+    
+class Course:
+    def __init__(self, name="", days="M", times="0", priority="1"):
+        self.name = name
+        self.days = days
+        self.times = times
+        self.priority = priority
+        self.courseSch = np.full((5,12),0)
+    
+    def setTimeSlot(self, d, t):
+        for ts in range(8,12):
+            self.courseSch[ Days[d].value - 1 ][ts] = 1
+        print(Days[d].name, " ", self.courseSch[ Days[d].value - 1 ])
+
+S1 = Schedule()
+
+C4 = Course(name = "CS1114", days = "T") #created test course
+C5 = Course(name = "EG1003", days = "W") #created test course
 
 def time_conflict(a, b):
   if a + b > 1:
@@ -27,13 +46,13 @@ def fill_schedule(course):
       else:
         print("ErrorLog: Time Conflict")
 
-print("Course1: ", C1)
-print("Current Schedule: ", CSch);
-fill_schedule(C1)
-print("Course1: ", C2)
-print("Current Schedule: ", CSch);
-fill_schedule(C2)
-print("Course1: ", C3)
-print("Current Schedule: ", CSch);
-fill_schedule(C3)
-print("Final Schedule: ", CSch);
+print("C4: ",C4.courseSch)
+print("C5: ",C5.courseSch)
+print(Days['M'].value)
+C4.setTimeSlot(C4.days, C4.times)
+C5.setTimeSlot(C5.days, C5.times)
+print("C4: ",C4.courseSch)
+print("C5: ",C5.courseSch)
+#print(C4.name , "\n" , C4.courseSch)
+#print(C5.name , "\n" , C5.courseSch)
+
