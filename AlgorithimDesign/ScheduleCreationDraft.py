@@ -11,7 +11,7 @@ class Schedule:
         print("adding course")
 
     def checkTimeConflict(self, ts_cour): # variable is arrays for a specific day
-        print("checks if acourse can fit into the schedule")
+        print("checks if a course can fit into the schedule")
     
 class Course:
     def __init__(self, name="", days="M", times="0", priority="1"):
