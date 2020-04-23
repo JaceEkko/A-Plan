@@ -160,7 +160,27 @@ for c in range(0, 33): # append courses to the list
     calendarTmp = findTimes(newCourse)
     newCourse.calendar = calendarTmp
     #print(newCourse.calendar)
-    courseList.append(newCourse)
+
+    newCourseDict = {
+        "courseNum" : courseNumS[c],
+        "courseNum" : courseNumS[c],
+        "courseTitle" : courseTitleS[c],
+        "unitsNum" : unitsNumS[c],
+        "classNum" : classNumS[c],
+        "sectionNum" : sectionNumS[c],
+        "status" : statuS[c],
+        "mode" : modeS[c],
+        "room" : roomS[c],
+        "instructor" : instructorS[c],
+        "timesArray" : timesArrayS[c].split(" "),
+        "calendar" : ""
+    }
+
+    calendarTmp = findTimes(newCourse)
+    newCourseDict["calendar"] = calendarTmp
+    
+    #courseList.append(newCourse)
+    courseList.append(newCourseDict)
 
     
 courseListCombine = it.permutations(courseList, 4)
@@ -173,7 +193,8 @@ for combination in courseListCombine: # check compatability for each combination
         #print(tmpSchedule)
         for i in range(0,5): #check for conflicts
             for j in range(0,31):
-                tmpSchedule[i][j] = andGate(c.calendar[i][j], newSchedule[i][j]) # check if array indices contain a 1
+                currCalendar = c["calendar"]
+                tmpSchedule[i][j] = andGate(currCalendar[i][j], newSchedule[i][j]) # check if array indices contain a 1
         totalConflicts = 0
         for i in range(5): #gather number of conflicts
             for j in range(31):
@@ -182,7 +203,8 @@ for combination in courseListCombine: # check compatability for each combination
             print("it's zero") # just a check
             for i in range(5):
                 for j in range(31):
-                    newSchedule[i][j] =  orGate(c.calendar[i][j], newSchedule[i][j]) # add the course to the schedule
+                    currCalendar = c["calendar"]
+                    newSchedule[i][j] =  orGate(currCalendar[i][j], newSchedule[i][j]) # add the course to the schedule
             print(newSchedule)
             allSchedules.append(newSchedule) # add finalize schedule to list
                 
