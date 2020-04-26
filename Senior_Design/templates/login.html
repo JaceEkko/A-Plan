@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'layout.html' %}
+
+{% block body %}
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>A-Plan</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../static/login.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand-home">
+                    <a href="/">
+                        A-Plan
+                    </a>
+                </li>
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Login
+                    </a>
+                </li>
+                <li class="sidebar-brand">
+                    <a href="/signUp">
+                        Sign Up
+                    </a>
+                </li>
+                <li>
+                    <a href="/aboutUs">About Us</a>
+                </li>
+                <li>
+                    <a href="course_list.html">Course Catalogue</a>
+                </li>
+                <li>
+                    <a href="dashboard.html">My Page</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+
+    <div class="container">
+            <div id="div_login">
+                <h1>LOGIN</h1>
+                <form action="" method="POST">
+               <div class="form-group">
+                 <label>NYU Email</label>
+                 <input type="text" name="student_net_ID" class="form-control" value={{request.form.student_net_ID}}>
+               </div>
+               <div class="form-group">
+                 <label>Password</label>
+                 <input type="password" name="password" class="form-control" value={{request.form.password}}>
+               </div>
+               <div>
+               <button type="submit" class="btn btn-primary">Submit</button>
+
+               <p> Forgot Your Password?
+                  
+                </p>
+            </div>
+             </form>
+    </div>
+
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.0.js"   integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="   crossorigin="anonymous"></script>
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+{% endblock %}
+</html>

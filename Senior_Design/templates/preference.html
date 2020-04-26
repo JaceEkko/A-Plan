@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>A-Plan</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../static/fonts/linearicons/style.css">
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../static/preference.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand-home">
+                    <a href="/">
+                        A-Plan
+                    </a>
+                </li>
+                <li class="sidebar-brand">
+                    <a href="/login">
+                        Log In
+                    </a>
+                </li>
+                <li class="sidebar-brand">
+                    <a href="/signUp">
+                        Sign Up
+                    </a>
+                </li>
+                <li>
+                    <a href="/aboutUs">About Us</a>
+                </li>
+                <li>
+                    <a href="course_list.html">Course Catalogue</a>
+                </li>
+                <li>
+                    <a href="dashboard.html">My Page</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div class="wrapper">
+            <div class="inner">
+                <form action="">
+                    <h3>Preference</h3><br>
+                    <p>Please fill out the form below in order to make your ideal schedule.</p>
+                    <div class="form-holder">
+                        <span class="lnr lnr-user"></span>
+                        <select name="major" id="major" class="form-control">
+                            <option selected="Selected">Select Your Major</option>
+                            <option value="CS">Computer Science</option>
+                            <option value="BTM">Business Technology Management</option>
+                            <option value="CSE">Computer Engineering</option>
+                            <option value="BMS">Biomolecular Science</option>
+                            <option value="CBE">Chemical&Biological Engineering</option>
+                            <option value="CE">Civil Engineering</option>
+                            <option value="CAM">Culture, Arts, and Media</option>
+                            <option value="ECE">Electrical Engineering</option>
+                            <option value="DM">Integrated Digital Media</option>
+                            <option value="MA">Mathematics</option>
+                            <option value="ME">Mechanical Engineering</option>
+                            <option value="PH">Physics</option>
+                            <option value="STS">Science and Technology</option>
+                            <option value="SEG">Society, Environment&Globalization</option>
+                            <option value="URB">Urban Studies</option>
+                        </select>
+                    </div>
+                    <div class="form-holder">
+                        <span class="lnr lnr-user"></span>
+                        <select name="term" id="term" class="form-control">
+                            <option selected="selected">Select Academic Term</option>
+                            <option value="Spring 2020">Spring 2020</option>
+                            <option value="Summer 2020">Summer 2020</option>
+                            <option value="Fall 2020">Fall 2020</option>
+                        </select>
+                    </div>
+                    <button id="btnSignUp">
+                        <span>Submit</span>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+        
+<!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+<!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.0.js"   integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="   crossorigin="anonymous"></script>
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        $(function() {
+            $('#btnSignUp').click(function() {
+ 
+                $.ajax({
+                    url: '/signUp',
+                    data: $('form').serialize(),
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
