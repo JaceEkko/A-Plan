@@ -163,7 +163,6 @@ for c in range(0, 33): # append courses to the list
 
     newCourseDict = {
         "courseNum" : courseNumS[c],
-        "courseNum" : courseNumS[c],
         "courseTitle" : courseTitleS[c],
         "unitsNum" : unitsNumS[c],
         "classNum" : classNumS[c],
@@ -186,7 +185,8 @@ for c in range(0, 33): # append courses to the list
 courseListCombine = it.permutations(courseList, 4)
 allSchedules = list()
 for combination in courseListCombine: # check compatability for each combination
-    newSchedule = [[0 for i in range(31)] for j in range(5)] 
+    newSchedule = [[0 for i in range(31)] for j in range(5)]
+    classInSch = 0
     for c in combination:
         #print(c.calendar)
         tmpSchedule = [[0 for i in range(31)] for j in range(5)] 
@@ -205,6 +205,10 @@ for combination in courseListCombine: # check compatability for each combination
                 for j in range(31):
                     currCalendar = c["calendar"]
                     newSchedule[i][j] =  orGate(currCalendar[i][j], newSchedule[i][j]) # add the course to the schedule
-            print(newSchedule)
-            allSchedules.append(newSchedule) # add finalize schedule to list
+            classInSch = classInSch + 1
+            if classInSch == 4: # four classes to a schedule
+                print(newSchedule)
+                #allSchedules.append(newSchedule) # add finalize schedule to list
+                allSchedules.append(combination)
+                classInSch = 0
                 
