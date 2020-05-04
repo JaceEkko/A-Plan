@@ -212,3 +212,5 @@ for combination in courseListCombine: # check compatability for each combination
                 allSchedules.append(combination)
                 classInSch = 0
                 
+firstSchedule = allSchedules[0]
+                
