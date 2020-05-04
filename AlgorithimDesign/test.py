@@ -5,7 +5,7 @@
 import pandas as pd
 import itertools as it
 
-data = pd.read_csv("new_cs_spring2020.csv")
+data = pd.read_csv("new_cs_spring2020_UPDATES.csv")
 
 class FinalSchedule:
     courseTitles = ""
