@@ -36,7 +36,7 @@ classNumS = data.Class_Number
 sectionNumS = data.Section
 statuS = data.Status
 modeS = data.Instruction_Mode
-timesArrayS = data.Meets
+timesArrayS = data.Meets.replace(':','.') #Replace : with a . to make findTimes work
 roomS = data.Room
 instructorS = data.Instructor
 
