@@ -143,7 +143,7 @@ def orGate(A,B):
 
 courseList = list()
 
-for c in range(0, 33): # append courses to the list
+for c in range(0, 10): # append courses to the list
     newCourse = Course() # create new instance of Course
     
     newCourse.courseNum = courseNumS[c]
