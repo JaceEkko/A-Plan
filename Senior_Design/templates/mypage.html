@@ -19,7 +19,19 @@
     <link href="../static/about_us.css" rel="stylesheet">
 
 </head>
+<style>
 
+    .wrapper {
+        display:flex; 
+        flex-direction:column; 
+        align-items:center; 
+        justify-content:center;
+    }
+    input {
+        width: 50%;
+    }
+
+</style>
 <body>
     <div id="wrapper">
 
@@ -40,67 +52,37 @@
                     <a href="/aboutUs">About Us</a>
                 </li>
                 <li>
-                    <a href="#">Course Catalogue</a>
+                    <a href="/dashboard">Course Catalogue</a>
                 </li>
                 <li>
-                    <a href="/mypage">Generate Schedules</a>
+                    <a href="#">Generate Schedules</a>
                 </li>
             </ul>
         </div>
-        <style>
-            input {
-              width: 50%;
-            }
-
-            table {
-              <!--font-family: arial, sans-serif;-->
-              border-collapse: collapse;
-              width: 100%;
-            }
-
-            td, th {
-              border: 1px solid #dddddd;
-              text-align: center;
-              padding: 8px;
-            }
-
-            tr:nth-child(even) {
-              background-color: #dddddd;
-            }
-        </style>
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
         <h1>
-             Welcome back, {{name}}
-        </h1><br>
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for course.." title="Type in a course">
-        <br>
-        <table  id="myTable">
-        <tr>
-            <th>Course Title</th>
-            <th>Course Name</th>
-            <th>Course Number</th>
-            <th>Units</th>
-            <th>Meeting Time</th>
-            
-        </tr>
-        <br>
-        <tr>
-            {% for course_Data in theList %}
+             Select Courses
+        </h1>
+        <div class="wrapper">
+            <div class="inner">
+                <form name="signupForm" id="signupForm" method="POST">
+                    <div class="form-holder">
+                        {% for course_Data in theList %}
+                        <input type="checkbox" name="inputCourseName" value="{{course_Data.course_Name}}" id="courseName" class="form-control">{{course_Data.course_Name}}
+                        {% endfor %}
+                        
+                    </div>
+                    <br>
+                    <button id="btnSignUp">
+                        <span>Confirm</span>
+                    </button>
+                </form>
+            </div>
 
-            <td><p>{{course_Data.Course_title}}</p></td>
-            <td><p>{{course_Data.course_Name}}</p></td>
-            <td><p>{{course_Data.Class_Num}}</p></td>
-            <td><p>{{course_Data.Units}}</p></td>
-            <td><p>{{course_Data.Meets}}</p></td>
-            </tr>
-            {% endfor %}
-
-        
-    </tr>
-</table>
+        </div>
 
 
     

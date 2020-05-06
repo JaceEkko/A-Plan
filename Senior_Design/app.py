@@ -10,8 +10,8 @@ import pymysql.cursors
 from functools import wraps
 from datetime import datetime
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from werkzeug import secure_filename
-from flask_sqlalchemy import SQLAlchemy
+# from werkzeug import secure_filename
+# from flask_sqlalchemy import SQLAlchemy
 import os
 import time
 from datetime import datetime, timedelta
@@ -24,8 +24,9 @@ app = Flask(__name__)
 # Config mysql
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'A-PLAN'
+app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_DB'] = 'aplan'
+app.config['MYSQL_DATABASE_PORT'] = 8889
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
 # init MySQL
@@ -63,6 +64,11 @@ def main():
 @app.route("/aboutUs")
 def aboutUS():
     return render_template('about_us.html')
+
+@app.route("/aboutUsLoggedIn")
+@is_logged_in
+def aboutUsLoggedIn():
+    return render_template('about_us_login.html')
 
 @app.after_request
 def add_header(response):
@@ -111,8 +117,6 @@ class LoginForm(Form):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-
-
 @app.route('/signUp', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
@@ -128,8 +132,8 @@ def register():
         MY_N_ID = form.N_ID.data
         MY_Password = sha256_crypt.encrypt(str(form.Password.data))
         
-        connection = pymysql.connect("localhost", "root", "", "A-PLAN")
-        cursor = connection.cursor();
+        connection = pymysql.connect("localhost", "root", "root", "aplan", 8889)
+        cursor = connection.cursor()
         #cur = mysql.connection.connect()
         #cur = mysql.get_db().cursor()
         print("Hello World")
@@ -151,27 +155,13 @@ def register():
         
         try:
             with connection.cursor() as cursor:
-
-                #cursor.execute("INSERT INTO Person(username, password, fname, lname, avatar, bio, isPrivate) VALUES (%s, %s, %s, %s, %s, %s, %s)",(username, password, FirstName, LastName, AvatarName, BioName, five ))
                 cursor.execute("INSERT INTO Student(NYU_Net_ID, First_name, Last_name, Major, N_ID, Password) VALUES (%s, %s, %s, %s, %s,%s)", (MY_NYU_ID, FirstName, LastName, MY_Major, MY_N_ID, MY_Password))
             connection.commit()
-            #print(m)
         finally:
             connection.close()
-        #excute query
-        #cursor.execute("INSERT INTO users(name, email, username, password) VALUES (%s, %s, %s, %s)",(name, email, username, password))
 
-        # Commit to Database
-        #connection.commit()
 
-        # Close connection
-        #cursor.close()
-
-        flash('You are now registered to A-PLAN and can log in', 'success')
-
-        return redirect(url_for('login'))
-
-        #return render_template('register.html')
+        return render_template('login.html')
 
     return render_template('signup.html', form=form)
 
@@ -187,8 +177,8 @@ def login():
         password_candidate = request.form['password']
 
         ## Create a cursor
-        connection = pymysql.connect("localhost", "root", "", "A-PLAN")
-        cursor = connection.cursor(pymysql.cursors.DictCursor);
+        connection = pymysql.connect("localhost", "root", "root", "aplan", 8889)
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
         #cur = connection.cursor(dictionary=True);
 
         ## Get the name of the user
@@ -239,14 +229,14 @@ def logout():
 def dashboard():
     #session['logged_in'] = False
     print(session['student'])
-    print session['logged_in']
+    print(session['logged_in'])
     #print(m)
     if(session['logged_in'] == False ):
-        print "Hello"
+        print("Hello")
         #flash('You need to log in first', 'danger')
         return redirect(url_for('login'))
-    connection = pymysql.connect("localhost", "root", "", "A-PLAN")
-    cursor = connection.cursor();
+    connection = pymysql.connect("localhost", "root", "root", "aplan", 8889)
+    cursor = connection.cursor()
 
     new_course_data = {}
     courseDict = []
@@ -269,6 +259,104 @@ def dashboard():
 
 
     return render_template("dashboard.html", name=session['student'], theList=courseDict)
+
+@app.route('/mypage', methods = ['GET','POST'])
+@is_logged_in
+def mypage():
+    #session['logged_in'] = False
+    print(session['student'])
+    print(session['logged_in'])
+    #print(m)
+    if(session['logged_in'] == False ):
+        print("Hello")
+        #flash('You need to log in first', 'danger')
+        return redirect(url_for('login'))
+    connection = pymysql.connect("localhost", "root", "root", "aplan", 8889)
+    cursor = connection.cursor()
+
+    new_course_data = {}
+    courseDict = []
+
+    query3 = "SELECT DISTINCT course_Name FROM Course_List ORDER BY course_Name ASC"
+    # for x in data:
+    with connection.cursor() as cursor:
+        cursor.execute(query3, ())
+    data3 = cursor.fetchall()
+    # print data3
+    if (data3):
+        for xx in data3:
+            new_course_data = {}
+            new_course_data["course_Name"] = xx[0]
+            courseDict.append(new_course_data)
+
+    if request.method == 'POST':
+        _selectedList = request.form.getlist("inputCourseName")
+        session['selectedList'] = _selectedList
+
+
+        if len(_selectedList) > 0:
+            return redirect("/scheduleOutput")
+        else:
+            return render_template("error.html")
+
+
+
+    return render_template("mypage.html", name=session['student'], theList=courseDict)
+
+@app.route('/scheduleOutput', methods = ['GET', 'POST'])
+@is_logged_in
+def scheduleOutput():
+    # session['logged_in'] = False
+    print(session['student'])
+    print("helloworld")
+    print(session['logged_in'])
+    print(session['selectedList'])
+    # print(m)
+    if (session['logged_in'] == False):
+        print("Hello")
+        # flash('You need to log in first', 'danger')
+        return redirect(url_for('login'))
+    connection = pymysql.connect("localhost", "root", "root", "aplan", 8889)
+    cursor = connection.cursor()
+
+    new_course_data = {}
+    courseList = []
+    courseList2 = []
+    selectedList = session['selectedList']
+
+
+    #for x in data:
+    with connection.cursor() as cursor:
+        for i in range(len(selectedList)):
+            cursor.execute("SELECT Course_title, course_Name, class_Num, Units, Meets FROM Course_List WHERE Class_Num=(SELECT MAX(Class_Num) FROM Course_List WHERE course_Name=%s)", selectedList[i])
+            data2 = cursor.fetchall()
+
+            if(data2):
+                for xx in data2:
+                    new_course_data = {}
+                    new_course_data['course_title'] = xx[0]
+                    new_course_data['course_Name'] = xx[1]
+                    new_course_data['class_Num'] = xx[2]
+                    new_course_data['Units'] = xx[3]
+                    new_course_data['Meets'] = xx[4]
+                    courseList.append(new_course_data)
+
+        for i in range(len(selectedList)):
+            cursor.execute("SELECT Course_title, course_Name, class_Num, Units, Meets FROM Course_List WHERE Class_Num=(SELECT MIN(Class_Num) FROM Course_List WHERE course_Name=%s)", selectedList[i])
+            data3 = cursor.fetchall()
+
+            if(data3):
+                for xx in data3:
+                    new_course_data = {}
+                    new_course_data['course_title'] = xx[0]
+                    new_course_data['course_Name'] = xx[1]
+                    new_course_data['class_Num'] = xx[2]
+                    new_course_data['Units'] = xx[3]
+                    new_course_data['Meets'] = xx[4]
+                    courseList2.append(new_course_data)
+
+
+    return render_template("scheduleOutput.html", name=session['student'], selectedList=session['selectedList'], theList=courseList, theList2 = courseList2)
 
 if __name__=='__main__':
 
