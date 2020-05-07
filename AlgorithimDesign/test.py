@@ -44,21 +44,21 @@ instructorS = data.Instructor
 def findDay(structCourse):
     Day = [0,0] # what days the class will be held on
     if len(structCourse.timesArray) == 5:
-        if structCourse.timesArray[0] == 'Mon':
+        if structCourse.timesArray[0] == 'Mo':
             Day[0] = 0
-        elif structCourse.timesArray[0] == 'Tue':
+        elif structCourse.timesArray[0] == 'Tu':
             Day[0] = 1
-        elif structCourse.timesArray[0] == 'Wed':
+        elif structCourse.timesArray[0] == 'We':
             Day[0] = 2
-        elif structCourse.timesArray[0] == 'Thu':
+        elif structCourse.timesArray[0] == 'Th':
             Day[0] = 3
-        elif structCourse.timesArray[0] == 'Fri':
+        elif structCourse.timesArray[0] == 'Fr':
             Day[0] = 4
     if len(structCourse.timesArray) == 6:
-        if structCourse.timesArray[0] == 'Mon':
+        if structCourse.timesArray[0] == 'Mo':
             Day[0] = 0
             Day[1] = 2
-        elif structCourse.timesArray[0] == 'Tue':
+        elif structCourse.timesArray[0] == 'Tu':
             Day[0] = 1
             Day[1] = 3
 
